@@ -37,41 +37,40 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 // каждый символ это десять нулей. если символ равен точке, то это 10, если тире, то 11
-function decode(expr) {
-  // console.log(expr.length)
-  // str.repeat()
-  let str = "0";
-  let result = ''; 
+// m = 0*10 '--' => 00 00 00 11 11
+function decode(expr) {    
+  let str = "";
+  let str2 = "";
+  let result = "";
+  let decode = "";
 
-
-  for (var i = expr.length - 1; i >= 0; i--) {
-    for (key in MORSE_TABLE) {
-      if (expr[i] == MORSE_TABLE[key]){
-        result += key;
+  
+  while (expr.length != 0) {
+      str = expr.slice(0, 10);
+      expr = expr.substr(10);
+      if (str == "**********") {
+          decode += " ";
+          continue;
       }
-      // console.log(key); // символы
-      // console.log(MORSE_TABLE[key]); //  буквы
-    }
-  // console.log(expr[i]);
-  // console.log(MORSE_TABLE.expr[i]);
-  // result += expr[i];
+      while (str.length != 0) {
+          str2 = str.slice(0, 2);
+          str = str.substr(2);
+          if (str2 == "11") {
+              result += "-";
+          }
+          if (str2 == "10") {
+              result += ".";
+          }
+      }
+
+      decode += MORSE_TABLE[result];
+      result = "";
   }
-  console.log(result)
-  if (result.length < 10) {
-    result = str.repeat(10 - result.length) + result;
-    return result;
-  } else {
-    return result;
-  }
+
+  return decode;
 }
 
 module.exports = {
     decode
 }
 
-console.log(decode('me'));
-// decode('me');
-// console.log(decode('hello world'));
-// decode('hello world');
-
-decode('829b4b8c');
